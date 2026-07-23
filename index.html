@@ -5,12 +5,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
   <!-- ============ SEO ============ -->
-  <title>Apartment &amp; Condo Cleaning in Davenport &amp; Central FL | Recurring from $85</title>
-  <meta name="description" content="Recurring house cleaning for condos and apartments (up to 3 bedrooms) in Davenport, Champions Gate & Kissimmee. Flat rates from $85/visit, done while you work with photo proof. Bonded & insured. 24-hour Worry-Free Guarantee. Book in English, Portuguese & Spanish." />
+  <title>Apartment &amp; Condo Cleaning in Davenport &amp; Central FL | Recurring from $75</title>
+  <meta name="description" content="Recurring house cleaning for condos and apartments (up to 3 bedrooms) in Davenport, Champions Gate & Kissimmee. Weekly, bi-weekly or monthly flat rates from $75/visit, done while you work with photo proof. Bonded & insured. 24-hour Worry-Free Guarantee. Book in English, Portuguese & Spanish." />
   <link rel="canonical" href="https://www.urbancleanfl.com/" />
   <meta name="theme-color" content="#0B87C0" />
   <meta property="og:type" content="website" />
-  <meta property="og:title" content="Urban Clean — A spotless home, without lifting a finger." />
+  <meta property="og:title" content="Urban Clean — Come on in, your home is spotless." />
   <meta property="og:description" content="Local, bonded & insured house cleaning in Davenport & Central FL. Pet-friendly. 24-hour Worry-Free Guarantee." />
   <meta property="og:image" content="assets/logo.png" />
 
@@ -20,6 +20,8 @@
   <link rel="icon" type="image/png" href="assets/logo.png" />
   <link rel="stylesheet" href="styles.css" />
 
+  <!-- aggregateRating intentionally omitted: no real reviews yet. Add it only from
+       verified customer ratings — fabricated structured data risks a Google manual action. -->
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -32,8 +34,7 @@
     "areaServed": ["Davenport FL","Champions Gate FL","Kissimmee FL","Celebration FL","Haines City FL","Reunion FL"],
     "address": { "@type": "PostalAddress", "addressLocality": "Davenport", "addressRegion": "FL", "addressCountry": "US" },
     "openingHours": "Mo-Sa 08:00-18:00",
-    "makesOffer": { "@type": "Offer", "name": "$39 off your first cleaning" },
-    "aggregateRating": { "@type": "AggregateRating", "ratingValue": "5.0", "reviewCount": "27" }
+    "makesOffer": { "@type": "Offer", "name": "New client: $15 off your first cleans — up to $60 off (4 visits weekly, 3 bi-weekly, 2 monthly)" }
   }
   </script>
 </head>
@@ -53,7 +54,8 @@
         <a href="#pets" data-i18n="nav.pets">Pet-Friendly</a>
         <a href="#guarantee" data-i18n="nav.guarantee">Guarantee</a>
         <a href="#how" data-i18n="nav.how">How it works</a>
-        <a href="#reviews" data-i18n="nav.reviews">Reviews</a>
+        <a href="#reviews" data-i18n="nav.reviews">Offer</a>
+        <a href="#owners" class="nav-b2b" data-i18n="nav.owners">Owners</a>
       </nav>
 
       <div class="header-actions">
@@ -75,12 +77,16 @@
 
     <!-- ============ HERO ============ -->
     <section class="hero">
-      <div class="hero-bg" style="background-image:url('assets/hero-home.jpg')" role="img" aria-label="A woman relaxing on her freshly cleaned living-room floor with her happy cat and dog"></div>
+      <!-- Parallax shell (JS drives translateY) wrapping the Ken Burns image layer -->
+      <div class="hero-bg" id="heroBg">
+        <div class="hero-bg-img" style="background-image:url('assets/hero-home.jpg')" role="img" aria-label="A woman relaxing on her freshly cleaned living-room floor with her happy cat and dog"></div>
+      </div>
+      <div class="hero-grain" aria-hidden="true"></div>
       <div class="container hero-grid">
-        <div class="hero-copy reveal">
+        <div class="hero-copy hero-stagger">
           <p class="eyebrow"><span class="dot"></span> <span data-i18n="hero.eyebrow">Davenport &amp; Central Florida · Bonded &amp; Insured</span></p>
-          <h1 data-i18n-html="hero.h1">A spotless home,<br><span class="grad-text">without lifting a finger.</span></h1>
-          <p class="lede" data-i18n="hero.lede">Recurring cleaning for condos &amp; apartments in Davenport — done while you're at work, with photo proof when we finish. Background-checked pros, backed by our 24-hour Worry-Free Guarantee.</p>
+          <h1 data-i18n-html="hero.h1">Come on in &mdash;<br><span class="grad-text">your home is spotless.</span></h1>
+          <p class="lede" data-i18n="hero.lede">Recurring cleaning for condos &amp; apartments in Davenport — done while you're at work, with photo proof when we finish. A small, trusted team — the same person every visit — backed by our 24-hour Worry-Free Guarantee.</p>
 
           <ul class="trust-chips">
             <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 16.2 4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z"/></svg> <span data-i18n="hero.chip1">100% Satisfaction</span></li>
@@ -97,8 +103,7 @@
           </div>
 
           <div class="hero-social">
-            <div class="stars" aria-label="5 out of 5 stars">★★★★★</div>
-            <span data-i18n-html="hero.social">Trusted by condo &amp; apartment residents across Central FL · <strong>EN · PT · ES</strong></span>
+            <span data-i18n-html="hero.social">Local family business in Davenport &middot; Condos &amp; apartments up to 3 bedrooms &middot; <strong>EN &middot; PT &middot; ES</strong></span>
           </div>
         </div>
 
@@ -135,14 +140,30 @@
                 <li data-i18n="svc.recurring.li2">Dusting, vacuuming, mopping</li>
                 <li data-i18n="svc.recurring.li3">Same trusted team each visit</li>
               </ul>
-              <div class="apt-prices" aria-label="Apartment recurring pricing">
-                <div class="apt-tier"><span data-i18n="svc.apt.t1">1 bed / 1 bath</span><strong>$85</strong></div>
-                <div class="apt-tier"><span data-i18n="svc.apt.t2">2 bedroom</span><strong>$115</strong></div>
-                <div class="apt-tier"><span data-i18n="svc.apt.t3">3 bedroom</span><strong>$145</strong></div>
+              <div class="apt-prices" aria-label="Recurring pricing by frequency">
+                <div class="apt-r apt-h">
+                  <span class="apt-lbl"></span>
+                  <span data-i18n="svc.apt.fw">Weekly</span>
+                  <span class="apt-best" data-i18n="svc.apt.fb">Bi-weekly</span>
+                  <span data-i18n="svc.apt.fm">Monthly</span>
+                </div>
+                <div class="apt-r">
+                  <span class="apt-lbl" data-i18n="svc.apt.t1">1 bed</span>
+                  <span>$75</span><strong>$85</strong><span>$105</span>
+                </div>
+                <div class="apt-r">
+                  <span class="apt-lbl" data-i18n="svc.apt.t2">2 bed</span>
+                  <span>$99</span><strong>$115</strong><span>$140</span>
+                </div>
+                <div class="apt-r">
+                  <span class="apt-lbl" data-i18n="svc.apt.t3">3 bed</span>
+                  <span>$125</span><strong>$145</strong><span>$175</span>
+                </div>
               </div>
-              <p class="apt-note" data-i18n="svc.apt.note">Per visit · bi-weekly recurring. One-time from $95 · pet homes +$15.</p>
+              <p class="apt-intro" data-i18n="svc.apt.intro">🎁 New client: $15 off your first visits — up to $60 off.</p>
+              <p class="apt-note" data-i18n="svc.apt.note">Per visit · pet homes +$15. One-time (no schedule): $115 / $150 / $185.</p>
               <div class="svc-foot">
-                <span class="price" data-i18n-html="svc.recurring.price">from <strong>$85</strong>/visit</span>
+                <span class="price" data-i18n-html="svc.recurring.price">from <strong>$75</strong>/visit</span>
                 <a href="#estimate" class="svc-link" data-i18n="svc.cta">Get estimate →</a>
               </div>
             </div>
@@ -159,7 +180,7 @@
                 <li data-i18n="svc.deep.li3">Ideal every 6–12 months</li>
               </ul>
               <div class="svc-foot">
-                <span class="price" data-i18n="svc.custom">custom quote</span>
+                <span class="price" data-i18n-html="svc.deep.price">from <strong>$165</strong></span>
                 <a href="#estimate" class="svc-link" data-i18n="svc.cta">Get estimate →</a>
               </div>
             </div>
@@ -168,17 +189,17 @@
           <article class="service-card reveal">
             <div class="card-img" style="background-image:url('assets/svc-moveout.jpg')" aria-hidden="true"></div>
             <div class="card-body">
-              <div class="niche-tag" data-i18n="svc.moveout.tag">Owners &amp; property managers — direct only</div>
+              <div class="niche-tag" data-i18n="svc.moveout.tag">Owners &amp; property managers — request your quote</div>
               <h3 data-i18n="svc.moveout.title">Move-Out &amp; Vacation Turnovers</h3>
-              <p data-i18n="svc.moveout.desc">Deposit-saving move-out cleans for apartments &amp; homes. Vacation-home turnovers by direct arrangement with owners and property managers only — no third-party agencies.</p>
+              <p data-i18n="svc.moveout.desc">Deposit-saving move-out cleans for apartments &amp; homes. Own or manage a vacation home? Send us your property details and get a custom turnover quote — we work directly with you.</p>
               <ul class="svc-list">
                 <li data-i18n="svc.moveout.li1">Full kitchen &amp; bath detail</li>
                 <li data-i18n="svc.moveout.li2">Reliable same-day turnovers</li>
                 <li data-i18n="svc.moveout.li3">Guest-ready every time</li>
               </ul>
               <div class="svc-foot">
-                <span class="price" data-i18n="svc.custom">custom quote</span>
-                <a href="#estimate" class="svc-link" data-i18n="svc.cta">Get estimate →</a>
+                <span class="price" data-i18n-html="svc.moveout.price">move-out from <strong>$195</strong></span>
+                <a href="#owners" class="svc-link" data-i18n="svc.moveout.cta">Owners &amp; managers — quote →</a>
               </div>
             </div>
           </article>
@@ -194,7 +215,7 @@
                 <li data-i18n="svc.onetime.li3">No contract, no strings</li>
               </ul>
               <div class="svc-foot">
-                <span class="price" data-i18n="svc.custom">custom quote</span>
+                <span class="price" data-i18n-html="svc.onetime.price">from <strong>$115</strong></span>
                 <a href="#estimate" class="svc-link" data-i18n="svc.cta">Get estimate →</a>
               </div>
             </div>
@@ -294,7 +315,13 @@
         <div class="guarantee-text">
           <p class="eyebrow light"><span class="dot"></span> <span data-i18n="guarantee.eyebrow">Our promise to you</span></p>
           <h2 data-i18n="guarantee.h2">The Worry-Free Guarantee</h2>
-          <p data-i18n-html="guarantee.body">Not 100% happy with your clean? Just tell us within <strong>24 hours</strong> and we'll come back and <strong>make it right — at no extra charge.</strong> No fine print. No asterisks. Just a promise.</p>
+          <p data-i18n-html="guarantee.body">Not 100% happy with your clean? Tell us within <strong>24 hours</strong> and we come back and re-clean it — <strong>at no extra charge.</strong></p>
+          <ol class="guarantee-steps">
+            <li data-i18n="guarantee.s1">Tell us within 24 hours of the visit — a photo helps us fix it faster.</li>
+            <li data-i18n="guarantee.s2">We come back within 2 business days and re-clean the areas you pointed out.</li>
+            <li data-i18n="guarantee.s3">Always free. The fix is a re-clean — not a refund or a discount.</li>
+          </ol>
+          <p class="guarantee-excl" data-i18n="guarantee.excl">Not covered: pre-existing stains or damage that can't be removed, areas we couldn't access on the day, and new mess made after our team left.</p>
           <div class="guarantee-badges">
             <span data-i18n="guarantee.b1">✓ Free re-clean</span>
             <span data-i18n="guarantee.b2">✓ Bonded &amp; insured</span>
@@ -320,12 +347,12 @@
           <li class="step reveal">
             <div class="step-num">2</div>
             <h3 data-i18n="how.s2t">We schedule &amp; confirm</h3>
-            <p data-i18n-html="how.s2d">Pick your day. You'll get SMS reminders and an <strong>"on our way"</strong> alert when your team is en route.</p>
+            <p data-i18n-html="how.s2d">Pick your day. We confirm on WhatsApp and message you when we're <strong>on our way</strong> — sent by a real person, not a robot.</p>
           </li>
           <li class="step reveal">
             <div class="step-num">3</div>
             <h3 data-i18n="how.s3t">Relax — we clean</h3>
-            <p data-i18n="how.s3d">Our vetted pros follow a proven checklist. You come home to spotless. That's your weekend back.</p>
+            <p data-i18n="how.s3d">Our team follows a proven checklist. You come home to spotless. That's your weekend back.</p>
           </li>
         </ol>
       </div>
@@ -359,27 +386,28 @@
     <section class="section reviews" id="reviews">
       <div class="container">
         <header class="section-head reveal">
-          <p class="eyebrow center"><span class="dot"></span> <span data-i18n="reviews.eyebrow">Reviews</span></p>
-          <h2 data-i18n-html="reviews.h2">Homes we've made <span class="grad-text">sparkle</span></h2>
-          <div class="stars big" aria-label="5 star average">★★★★★ <span data-i18n="reviews.avg">5.0 average</span></div>
+          <p class="eyebrow center"><span class="dot"></span> <span data-i18n="reviews.eyebrow">Founding clients</span></p>
+          <h2 data-i18n-html="reviews.h2">We're new here — and <span class="grad-text">that works in your favor</span></h2>
+          <p class="section-sub" data-i18n="reviews.sub">Urban Clean is a local family business just starting out in Davenport. We don't have a wall of reviews yet — we have something better for you right now: our full attention, and a founding-client price.</p>
         </header>
         <div class="review-grid">
-          <blockquote class="review-card reveal">
-            <div class="stars">★★★★★</div>
-            <p data-i18n="reviews.r1">"They clean my condo every two weeks while I'm at work and send photos when they finish. Spotless every time, never a hassle."</p>
-            <footer data-i18n="reviews.r1a">— Condo resident, Davenport</footer>
-          </blockquote>
-          <blockquote class="review-card reveal">
-            <div class="stars">★★★★★</div>
-            <p data-i18n="reviews.r2">"Two dogs and not a single tuft of hair left. Finally a crew that gets pet homes. Bi-weekly forever."</p>
-            <footer data-i18n="reviews.r2a">— Pet parent, Davenport</footer>
-          </blockquote>
-          <blockquote class="review-card reveal">
-            <div class="stars">★★★★★</div>
-            <p data-i18n="reviews.r3">"Deep clean before the holidays — baseboards, oven, everything. Spotless. Highly recommend."</p>
-            <footer data-i18n="reviews.r3a">— Family, Kissimmee</footer>
-          </blockquote>
+          <div class="review-card founding reveal">
+            <div class="founding-icon" aria-hidden="true">🛡️</div>
+            <h3 data-i18n="reviews.f1t">Insured, and never a stranger</h3>
+            <p data-i18n="reviews.f1d">Bonded &amp; insured — and it's a small team we know personally, not strangers from an app. COI available for property managers.</p>
+          </div>
+          <div class="review-card founding reveal">
+            <div class="founding-icon" aria-hidden="true">📸</div>
+            <h3 data-i18n="reviews.f2t">Proof, not promises</h3>
+            <p data-i18n="reviews.f2d">We send photos when we finish, so you can check the work before you get home — no reviews needed to see what you paid for.</p>
+          </div>
+          <div class="review-card founding reveal">
+            <div class="founding-icon" aria-hidden="true">🤝</div>
+            <h3 data-i18n="reviews.f3t">You get the owner</h3>
+            <p data-i18n="reviews.f3d">No call center, no rotating crews. As a founding client you deal with us directly — and your feedback shapes how we work.</p>
+          </div>
         </div>
+        <p class="founding-cta reveal" data-i18n-html="reviews.fcta">Be one of our first clients — <strong>$15 off each of your first 3 visits.</strong> All we ask in return: an honest review.</p>
       </div>
     </section>
 
@@ -408,7 +436,7 @@
     <section class="estimate" id="estimate">
       <div class="container estimate-grid">
         <div class="estimate-copy reveal">
-          <div class="offer-badge big"><span data-i18n="offer.amount">$39 OFF</span><span class="small" data-i18n="offer.sub2">your first clean</span></div>
+          <div class="offer-badge big"><span data-i18n="offer.amount">UP TO $60 OFF</span><span class="small" data-i18n="offer.sub2">$15 off each of your first visits — 4 weekly, 3 bi-weekly, 2 monthly</span></div>
           <h2 data-i18n="estimate.h2">Get your free estimate</h2>
           <p data-i18n="estimate.body">No obligation, no pressure. Tell us about your home and we'll build a plan that fits your life and your budget — usually within a few hours.</p>
           <ul class="estimate-perks">
@@ -464,6 +492,81 @@
       </div>
     </section>
 
+    <!-- ============ OWNERS & PROPERTY MANAGERS (B2B) ============ -->
+    <section class="owners" id="owners">
+      <div class="container owners-grid">
+        <div class="owners-copy reveal">
+          <div class="eyebrow"><span class="dot"></span><span data-i18n="own.eyebrow">Owners &amp; property managers</span></div>
+          <h2 data-i18n="own.h2">Turnover cleaning, direct — no agency in the middle</h2>
+          <p data-i18n="own.body">Vacation homes, condos and rental portfolios. Tell us about your properties and we'll send a custom per-turnover quote by email — reviewed by a person, not a bot.</p>
+          <ul class="owners-perks">
+            <li data-i18n="own.b1">✓ Custom per-turnover pricing by property size</li>
+            <li data-i18n="own.b2">✓ Guest-ready standard: linens, restock, damage report with photos</li>
+            <li data-i18n="own.b3">✓ Bonded &amp; insured — COI and W-9 on request</li>
+            <li data-i18n="own.b4">✓ You deal directly with the owner of the company</li>
+          </ul>
+          <p class="owners-reply" data-i18n="own.reply">📩 We reply by email within 1 business day. Prefer a call? Tell us below and we'll ring you.</p>
+        </div>
+
+        <form class="owners-form reveal" id="ownersForm">
+          <div class="row">
+            <label><span data-i18n="own.f.company">Company / property name</span><input type="text" name="company" placeholder="ABC Property Management" /></label>
+            <label><span data-i18n="own.f.name">Contact name</span><input type="text" name="name" placeholder="Your name" required /></label>
+          </div>
+          <div class="row">
+            <label><span data-i18n="own.f.email">Email</span><input type="email" name="email" placeholder="you@company.com" required /></label>
+            <label><span data-i18n="own.f.phone">Phone</span><input type="tel" name="phone" placeholder="(863) 555-0142" /></label>
+          </div>
+          <div class="row">
+            <label><span data-i18n="own.f.role">I am a…</span>
+              <select name="role" required>
+                <option value="" data-i18n="own.role0">Choose one…</option>
+                <option data-i18n="own.role1">Property owner</option>
+                <option data-i18n="own.role2">Property manager</option>
+                <option data-i18n="own.role3">Co-host / Airbnb host</option>
+              </select>
+            </label>
+            <label><span data-i18n="own.f.units">How many properties?</span>
+              <select name="units" required>
+                <option value="" data-i18n="own.units0">Choose one…</option>
+                <option data-i18n="own.units1">1 property</option>
+                <option data-i18n="own.units2">2–5 properties</option>
+                <option data-i18n="own.units3">6+ properties</option>
+              </select>
+            </label>
+          </div>
+          <div class="row">
+            <label><span data-i18n="own.f.type">Property type</span>
+              <select name="ptype">
+                <option value="" data-i18n="own.type0">Choose one…</option>
+                <option data-i18n="own.type1">Vacation rental / short-term</option>
+                <option data-i18n="own.type2">Long-term rental</option>
+                <option data-i18n="own.type3">Mixed portfolio</option>
+              </select>
+            </label>
+            <label><span data-i18n="own.f.volume">Turnovers per month</span>
+              <select name="volume">
+                <option value="" data-i18n="own.vol0">Not sure yet</option>
+                <option data-i18n="own.vol1">1–4</option>
+                <option data-i18n="own.vol2">5–15</option>
+                <option data-i18n="own.vol3">16+</option>
+              </select>
+            </label>
+          </div>
+          <label><span data-i18n="own.f.notes">Property details — city, bedrooms/baths, turnover window</span><textarea name="notes" rows="3" placeholder="e.g. 2 homes in Champions Gate, 4BR/3BA, checkout 10am → check-in 4pm"></textarea></label>
+          <label><span data-i18n="own.f.contact">Best way to reach you</span>
+            <select name="contact_pref">
+              <option data-i18n="own.contact1">Email</option>
+              <option data-i18n="own.contact2">Phone call</option>
+              <option data-i18n="own.contact3">Text / WhatsApp</option>
+            </select>
+          </label>
+          <button type="submit" class="btn btn-primary btn-lg btn-block" data-i18n="own.submit">Request a turnover quote →</button>
+          <p class="form-note" id="ownersNote" hidden data-i18n-html="own.thanks">Request received. We'll email you a custom quote within 1 business day. — <strong>Obrigado!</strong></p>
+        </form>
+      </div>
+    </section>
+
     <!-- ============ FAQ ============ -->
     <section class="section faq" id="faq">
       <div class="container narrow">
@@ -472,8 +575,8 @@
           <h2 data-i18n="faq.h2">Good to know</h2>
         </header>
         <div class="faq-list">
-          <details class="reveal"><summary><span data-i18n="faq.q1">How do you price a cleaning?</span><span class="chev"></span></summary><p data-i18n="faq.a1">Apartments &amp; condos are simple flat rates — $85 (1 bed), $115 (2 bed), $145 (3 bed) on a bi-weekly recurring plan. One-time cleans start at $95, pet homes add $15, and larger houses or deep cleans get a quick custom quote. No hourly surprises.</p></details>
-          <details class="reveal"><summary><span data-i18n="faq.q2">Are you insured and background-checked?</span><span class="chev"></span></summary><p data-i18n="faq.a2">Yes. Urban Clean is bonded and insured, and every cleaner is background-checked before entering your home.</p></details>
+          <details class="reveal"><summary><span data-i18n="faq.q1">How do you price a cleaning?</span><span class="chev"></span></summary><p data-i18n="faq.a1">Flat rates by size and frequency — no hourly surprises. Weekly: $75 (1 bed), $99 (2 bed), $125 (3 bed). Bi-weekly: $85 / $115 / $145. Monthly: $105 / $140 / $175. The more often we come, the less each visit costs, because less dirt builds up. One-time cleans (no schedule) are $115 / $150 / $185. Deep cleans from $165, move-outs from $195, pet homes add $15.</p></details>
+          <details class="reveal"><summary><span data-i18n="faq.q2">Are you insured? Who actually comes to my home?</span><span class="chev"></span></summary><p data-i18n="faq.a2">Urban Clean is bonded and insured. And you won't get a rotating crew of strangers — we're a small local family team, so it's the same trusted person in your home visit after visit. Property managers can request our COI and W-9.</p></details>
           <details class="reveal"><summary><span data-i18n="faq.q3">Do you use pet-safe products?</span><span class="chev"></span></summary><p data-i18n="faq.a3">Always. We use non-toxic, low-fume cleaners and a fur-focused routine for homes and apartments with pets.</p></details>
           <details class="reveal"><summary><span data-i18n="faq.q4">What if I'm not happy with the clean?</span><span class="chev"></span></summary><p data-i18n="faq.a4">Tell us within 24 hours and we'll return and re-clean the area at no extra charge. That's our Worry-Free Guarantee.</p></details>
           <details class="reveal"><summary><span data-i18n="faq.q5">Do you clean vacation rentals?</span><span class="chev"></span></summary><p data-i18n="faq.a5">Yes — but for vacation homes we work directly with owners and property managers only, not through third-party agencies. For everyday cleaning, our focus is condos and apartments up to 3 bedrooms.</p></details>
@@ -489,7 +592,6 @@
       <div class="footer-brand">
         <img src="assets/logo.png" alt="Urban Clean" width="342" height="82" />
         <p data-i18n="footer.brand">Trusted local house cleaning for Davenport &amp; Central Florida. Pet-friendly, bonded &amp; insured, backed by our 24-hour Worry-Free Guarantee.</p>
-        <div class="stars">★★★★★</div>
       </div>
       <div class="footer-col">
         <h4 data-i18n="footer.services">Services</h4>
@@ -525,8 +627,14 @@
   </a>
 
   <!-- Floating mobile CTA -->
-  <a class="floating-cta" href="#estimate" data-i18n="floating.cta">Free Estimate · $39 off</a>
+  <a class="floating-cta" href="#estimate" data-i18n="floating.cta">Free Estimate · up to $60 off</a>
 
+  <!-- Back to top (desktop only, see styles.css) -->
+  <button class="scroll-top" id="scrollTop" type="button" aria-label="Back to top">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
+  </button>
+
+  <script src="assets/js/lenis.min.js" defer></script>
   <script src="i18n.js" defer></script>
   <script src="script.js" defer></script>
 </body>

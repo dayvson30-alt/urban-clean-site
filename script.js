@@ -8,9 +8,9 @@
   const DICT = window.I18N || {};
   const SUPPORTED = ['en', 'pt', 'es'];
   const trustItems = {
-    en: ['★ Background-checked pros', '★ Bonded & insured', '★ SMS "on our way" alerts', '★ Pet-friendly products', '★ Vacation-rental specialists', '★ EN · PT · ES'],
-    pt: ['★ Equipe verificada', '★ Com seguro', '★ Alertas "estamos a caminho"', '★ Produtos pet-friendly', '★ Especialistas em vacation rentals', '★ EN · PT · ES'],
-    es: ['★ Personal verificado', '★ Con seguro', '★ Alertas "vamos en camino"', '★ Productos pet-friendly', '★ Especialistas en vacation rentals', '★ EN · PT · ES']
+    en: ['✓ Same trusted team', '✓ Bonded & insured', '✓ "On our way" message', '✓ Pet-friendly products', '✓ Vacation-rental specialists', '✓ EN · PT · ES'],
+    pt: ['✓ Sempre a mesma equipe', '✓ Com seguro', '✓ Alertas "estamos a caminho"', '✓ Produtos pet-friendly', '✓ Especialistas em vacation rentals', '✓ EN · PT · ES'],
+    es: ['✓ Siempre el mismo equipo', '✓ Con seguro', '✓ Alertas "vamos en camino"', '✓ Productos pet-friendly', '✓ Especialistas en vacation rentals', '✓ EN · PT · ES']
   };
 
   function detectLang() {
@@ -105,6 +105,101 @@
     heroIO.observe(hero);
   }
 
+  /* =========================================================
+     SMOOTH SCROLL (Lenis)
+     styles.css keeps html{scroll-behavior:auto} on purpose — with
+     smooth there, the native and Lenis animations fight each other.
+     Under prefers-reduced-motion Lenis never boots and every jump
+     falls back to a native instant scroll.
+     ========================================================= */
+  const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+  let lenis = null;
+
+  if (window.Lenis && !reducedMotion.matches) {
+    lenis = new window.Lenis({
+      duration: 1.4,
+      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t))
+    });
+    (function raf(time) {
+      lenis.raf(time);
+      requestAnimationFrame(raf);
+    })(0);
+  }
+
+  /* Single entry point for every in-page jump, so the header never
+     covers the section we just scrolled to. */
+  const headerEl = document.querySelector('.site-header');
+  const scrollToTarget = (target) => {
+    if (!target) return;
+    const offset = -((headerEl ? headerEl.offsetHeight : 0) + 12);
+    if (lenis) lenis.scrollTo(target, { offset });
+    else target.scrollIntoView({ behavior: reducedMotion.matches ? 'auto' : 'smooth' });
+  };
+
+  document.querySelectorAll('a[href^="#"]').forEach((link) => {
+    const href = link.getAttribute('href');
+    if (!href || href === '#') return;
+    link.addEventListener('click', (e) => {
+      const target = document.querySelector(href);
+      if (!target) return;
+      e.preventDefault();
+      scrollToTarget(target);
+    });
+  });
+
+  /* Back to top — desktop only via CSS, see .scroll-top */
+  const scrollTopBtn = document.getElementById('scrollTop');
+  if (scrollTopBtn) {
+    scrollTopBtn.addEventListener('click', () => {
+      if (lenis) lenis.scrollTo(0);
+      else window.scrollTo({ top: 0, behavior: reducedMotion.matches ? 'auto' : 'smooth' });
+    });
+    const toggleScrollTop = () =>
+      scrollTopBtn.classList.toggle('visible', window.scrollY > 600);
+    window.addEventListener('scroll', toggleScrollTop, { passive: true });
+    toggleScrollTop();
+  }
+
+  /* Hero parallax — the photo drifts slower than the page.
+     Transform-only, rAF-throttled, and off for reduced-motion / small screens. */
+  const PARALLAX_DEPTH = 0.18;
+  const PARALLAX_MIN_WIDTH = 900;
+  const heroBg = document.getElementById('heroBg');
+  const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+
+  if (heroBg && hero) {
+    let ticking = false;
+
+    const paint = () => {
+      ticking = false;
+      const offset = Math.min(window.scrollY, hero.offsetHeight) * PARALLAX_DEPTH;
+      heroBg.style.transform = `translate3d(0, ${offset.toFixed(1)}px, 0)`;
+    };
+
+    const requestPaint = () => {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(paint);
+    };
+
+    const isParallaxOn = () =>
+      !prefersReducedMotion.matches && window.innerWidth >= PARALLAX_MIN_WIDTH;
+
+    const syncParallax = () => {
+      if (isParallaxOn()) {
+        window.addEventListener('scroll', requestPaint, { passive: true });
+        requestPaint();
+      } else {
+        window.removeEventListener('scroll', requestPaint);
+        heroBg.style.transform = '';
+      }
+    };
+
+    syncParallax();
+    window.addEventListener('resize', syncParallax, { passive: true });
+    prefersReducedMotion.addEventListener('change', syncParallax);
+  }
+
   /* Form handling (placeholder — wire to Formspree/N8N webhook) */
   function handleForm(form, note) {
     if (!form) return;
@@ -121,13 +216,14 @@
     });
   }
   handleForm(document.getElementById('estimateForm'), document.getElementById('formNote'));
+  handleForm(document.getElementById('ownersForm'), document.getElementById('ownersNote'));
 
   const miniForm = document.getElementById('miniForm');
   if (miniForm) {
     miniForm.addEventListener('submit', (e) => {
       e.preventDefault();
       console.log('[Urban Clean] mini lead:', Object.fromEntries(new FormData(miniForm).entries()));
-      setTimeout(() => document.getElementById('estimate').scrollIntoView({ behavior: 'smooth' }), 120);
+      setTimeout(() => scrollToTarget(document.getElementById('estimate')), 120);
     });
   }
 })();

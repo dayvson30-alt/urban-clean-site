@@ -51,7 +51,9 @@
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
-html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+/* scroll-behavior MUST stay auto — Lenis owns the scroll (see script.js).
+   Setting it to smooth makes the native and Lenis animations fight each other. */
+html { scroll-behavior: auto; -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
 body {
   font-family: 'Inter', system-ui, -apple-system, sans-serif;
   color: var(--ink);
@@ -119,10 +121,22 @@ ul { list-style: none; }
   border-bottom: 1px solid transparent; transition: box-shadow .3s, border-color .3s, background .3s;
 }
 .site-header.scrolled { box-shadow: var(--shadow-sm); border-color: var(--line); }
+/* The header carries logo + 7 nav items + language switch + CTA — more than the
+   1180px content container can hold, so it gets its own wider track. */
+.site-header .container { max-width: 1340px; }
 .header-inner { display: flex; align-items: center; gap: 20px; height: 108px; }
-.brand-logo { height: 78px; width: auto; }
-.nav { display: flex; gap: 26px; margin-left: 6px; margin-right: auto; }
-.nav a { font-weight: 600; font-size: .95rem; color: var(--ink-soft); position: relative; padding: 6px 0; }
+/* New-client intro offer, shown right under the price grid where the decision happens */
+.apt-intro {
+  margin-top: 12px; padding: 9px 13px; border-radius: var(--r-sm);
+  background: rgba(255,255,255,.16); border: 1px solid rgba(255,255,255,.26);
+  color: #fff; font-weight: 600; font-size: .86rem; line-height: 1.45;
+}
+
+/* Never let the flex row squeeze the logo — global img{max-width:100%} would distort it */
+.brand { flex: 0 0 auto; }
+.brand-logo { height: 66px; width: auto; max-width: none; flex-shrink: 0; }
+.nav { display: flex; gap: 16px; margin-left: 6px; margin-right: auto; }
+.nav a { font-weight: 600; font-size: .92rem; color: var(--ink-soft); position: relative; padding: 6px 0; white-space: nowrap; }
 .nav a::after { content: ''; position: absolute; left: 0; bottom: 0; width: 0; height: 2px; background: var(--grad-brand); border-radius: 2px; transition: width .3s var(--ease); }
 .nav a:hover { color: var(--brand-700); }
 .nav a:hover::after { width: 100%; }
@@ -142,16 +156,52 @@ ul { list-style: none; }
    HERO
    ========================================================= */
 .hero { position: relative; background: var(--grad-soft); padding: 70px 0 130px; overflow: hidden; }
-/* Full-bleed hero photo behind everything; left scrim keeps copy legible */
+
+/* Full-bleed hero photo behind everything.
+   Two layers so parallax (JS, on .hero-bg) and Ken Burns (CSS, on .hero-bg-img)
+   never fight over the same transform. */
 .hero-bg {
-  position: absolute; inset: 0; z-index: 0;
-  background-size: cover; background-position: center right; background-repeat: no-repeat;
+  position: absolute; inset: -8% 0; z-index: 0;
+  will-change: transform;
 }
-.hero-bg::after {
-  content: ''; position: absolute; inset: 0;
+.hero-bg-img {
+  position: absolute; inset: 0;
+  background-size: cover; background-position: center right; background-repeat: no-repeat;
+  transform: scale(1.05);
+  animation: kenBurns 22s linear infinite alternate;
+}
+@keyframes kenBurns {
+  from { transform: scale(1.05) translate3d(0, 0, 0); }
+  to   { transform: scale(1.18) translate3d(-2.6%, -1.8%, 0); }
+}
+
+/* Scrim lifted out of .hero-bg so it stays put while the photo drifts */
+.hero::after {
+  content: ''; position: absolute; inset: 0; z-index: 1; pointer-events: none;
   background: linear-gradient(100deg, rgba(244,251,255,.97) 0%, rgba(244,251,255,.82) 40%, rgba(244,251,255,.32) 66%, rgba(244,251,255,0) 100%);
 }
-.hero-grid { position: relative; z-index: 2; display: grid; grid-template-columns: 1.1fr .9fr; gap: 56px; align-items: center; }
+
+/* Film grain — kills the flat "AI render" look, 0 network cost (inline SVG noise) */
+.hero-grain {
+  position: absolute; inset: 0; z-index: 3; pointer-events: none;
+  opacity: .10; mix-blend-mode: multiply;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)' opacity='.42'/%3E%3C/svg%3E");
+}
+
+.hero-grid { position: relative; z-index: 4; display: grid; grid-template-columns: 1.1fr .9fr; gap: 56px; align-items: center; }
+
+/* Sequenced entrance — each block lands after the one above it */
+.hero-stagger > * { animation: heroIn .85s var(--ease) both; }
+.hero-stagger > *:nth-child(1) { animation-delay: .10s; }
+.hero-stagger > *:nth-child(2) { animation-delay: .22s; }
+.hero-stagger > *:nth-child(3) { animation-delay: .34s; }
+.hero-stagger > *:nth-child(4) { animation-delay: .46s; }
+.hero-stagger > *:nth-child(5) { animation-delay: .58s; }
+.hero-stagger > *:nth-child(6) { animation-delay: .70s; }
+@keyframes heroIn {
+  from { opacity: 0; transform: translate3d(0, 26px, 0); }
+  to   { opacity: 1; transform: none; }
+}
 
 /* Image frame utility — gradient placeholder shows if photo missing */
 .img-frame, .card-img {
@@ -262,10 +312,24 @@ input:focus, select:focus, textarea:focus { outline: none; border-color: var(--b
 .price { font-size: .9rem; color: var(--muted); }
 .price strong { font-family: 'Sora'; font-size: 1.35rem; color: var(--brand-700); }
 /* Apartment recurring pricing grid (lives inside the featured, dark card) */
-.apt-prices { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin: 2px 0 10px; }
-.apt-tier { display: flex; flex-direction: column; gap: 2px; padding: 10px 6px; text-align: center; background: rgba(255,255,255,.08); border: 1px solid rgba(255,255,255,.16); border-radius: 12px; }
-.apt-tier span { font-size: .72rem; line-height: 1.2; color: #BFE0F0; }
-.apt-tier strong { font-family: 'Sora', sans-serif; font-size: 1.3rem; color: #7FD8FF; }
+/* Recurring price grid — rows = apartment size, columns = frequency */
+.apt-prices { display: grid; gap: 4px; margin: 2px 0 10px; }
+.apt-r { display: grid; grid-template-columns: 1.18fr 1fr 1.1fr 1fr; align-items: center; gap: 4px; }
+.apt-r > span, .apt-r > strong { text-align: center; padding: 7px 2px; border-radius: 9px; }
+.apt-r > span:not(.apt-lbl) { font-family: 'Sora', sans-serif; font-size: .92rem; color: #DCEEF8; background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.10); }
+.apt-r > strong { font-family: 'Sora', sans-serif; font-size: 1.12rem; color: #7FD8FF; background: rgba(127,216,255,.14); border: 1px solid rgba(127,216,255,.34); }
+.apt-lbl { text-align: left; font-size: .72rem; line-height: 1.15; color: #BFE0F0; padding-left: 2px; }
+/* header row: labels only, no chip styling */
+.apt-h > span { font-size: .62rem; letter-spacing: .04em; text-transform: uppercase; color: #9FCCE2; padding: 2px 0; background: none; border: none; }
+.apt-h > .apt-best { color: #7FD8FF; font-weight: 700; }
+/* narrow phones: frequency labels (QUINZENAL/QUINCENAL) need the extra room */
+@media (max-width: 400px) {
+  .apt-h > span { font-size: .55rem; letter-spacing: 0; }
+  .apt-lbl { font-size: .66rem; }
+  .apt-r { grid-template-columns: 1.05fr 1fr 1.12fr 1fr; gap: 3px; }
+  .apt-r > span:not(.apt-lbl) { font-size: .86rem; }
+  .apt-r > strong { font-size: 1.02rem; }
+}
 .apt-note { font-size: .74rem; color: #BFE0F0; opacity: .9; margin: 0 0 4px; }
 .svc-link { font-weight: 700; font-size: .92rem; color: var(--brand-600); }
 .svc-link:hover { color: var(--brand-500); }
@@ -322,6 +386,21 @@ input:focus, select:focus, textarea:focus { outline: none; border-color: var(--b
 .guarantee-text h2 { color: #fff; font-size: clamp(1.9rem, 1.4rem + 2vw, 2.9rem); margin-bottom: 16px; }
 .guarantee-text p { color: #C9E6F4; font-size: 1.12rem; max-width: 40em; }
 .guarantee-text strong { color: #fff; }
+/* How the guarantee actually works — clarity sells better than "no fine print" */
+.guarantee-steps { list-style: none; counter-reset: gstep; display: grid; gap: 10px; margin: 22px 0 16px; max-width: 44em; }
+.guarantee-steps li {
+  counter-increment: gstep; position: relative; padding-left: 38px;
+  color: #D6EDF8; font-size: .99rem; line-height: 1.55;
+}
+.guarantee-steps li::before {
+  content: counter(gstep); position: absolute; left: 0; top: 1px;
+  width: 25px; height: 25px; border-radius: 50%;
+  background: rgba(255,255,255,.14); border: 1px solid rgba(255,255,255,.28);
+  display: grid; place-items: center;
+  font-family: 'Sora', sans-serif; font-weight: 700; font-size: .8rem; color: #fff;
+}
+.guarantee-excl { font-size: .88rem !important; color: #9CC4D8 !important; max-width: 44em; }
+
 .guarantee-badges { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 24px; }
 .guarantee-badges span { background: rgba(255,255,255,.1); border: 1px solid rgba(255,255,255,.18); padding: 9px 16px; border-radius: 100px; font-weight: 600; font-size: .9rem; color: #EAF6FD; }
 
@@ -365,6 +444,23 @@ input:focus, select:focus, textarea:focus { outline: none; border-color: var(--b
 .review-card p { font-size: 1.02rem; color: var(--ink-soft); margin: 14px 0; line-height: 1.65; }
 .review-card footer { font-weight: 700; font-size: .9rem; color: var(--muted); }
 
+/* Founding-client cards — real proof stands in for reviews we haven't earned yet */
+.review-card.founding { display: grid; gap: 6px; align-content: start; }
+.founding-icon {
+  width: 46px; height: 46px; border-radius: 14px; margin-bottom: 8px;
+  display: grid; place-items: center; font-size: 1.35rem;
+  background: var(--surface-3); border: 1px solid var(--line);
+}
+.review-card.founding h3 { font-size: 1.12rem; margin-bottom: 2px; }
+.review-card.founding p { margin: 0; font-size: .98rem; }
+.founding-cta {
+  margin: 30px auto 0; max-width: 640px; text-align: center;
+  background: var(--surface-2); border: 1px dashed var(--brand-400);
+  border-radius: var(--r-lg); padding: 18px 24px;
+  color: var(--ink-soft); font-size: 1.02rem;
+}
+.founding-cta strong { color: var(--brand-700); }
+
 /* =========================================================
    ESTIMATE
    ========================================================= */
@@ -380,6 +476,38 @@ input:focus, select:focus, textarea:focus { outline: none; border-color: var(--b
 .estimate-form { background: #fff; border-radius: var(--r-xl); padding: 34px 32px; box-shadow: var(--shadow-lg); display: grid; gap: 16px; }
 .estimate-form .row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
 .form-note { background: var(--surface-3); color: var(--brand-700); padding: 12px 16px; border-radius: var(--r-sm); font-weight: 600; text-align: center; }
+
+/* =========================================================
+   OWNERS & PROPERTY MANAGERS (B2B)
+   Light counterweight to the dark consumer estimate above.
+   ========================================================= */
+.owners { background: var(--surface-2); padding: clamp(70px, 6vw, 110px) 0; position: relative; overflow: hidden; }
+.owners::before {
+  content: ''; position: absolute; top: -18%; left: -10%; width: 42vw; height: 42vw;
+  background: radial-gradient(circle, rgba(11,135,192,.10), transparent 64%);
+}
+.owners-grid { position: relative; z-index: 2; display: grid; grid-template-columns: 1fr 1.05fr; gap: 54px; align-items: center; }
+.owners-copy h2 { font-size: clamp(1.8rem, 1.3rem + 2vw, 2.6rem); margin-bottom: 16px; }
+.owners-copy > p { color: var(--ink-soft); font-size: 1.06rem; max-width: 36em; }
+.owners-perks { display: grid; gap: 10px; margin: 24px 0; }
+.owners-perks li { color: var(--ink-soft); font-weight: 500; }
+.owners-reply {
+  display: inline-block; background: #fff; border-left: 4px solid var(--accent);
+  padding: 12px 18px; border-radius: 0 var(--r-sm) var(--r-sm) 0;
+  color: var(--ink-soft); font-size: .95rem; box-shadow: var(--shadow-md);
+}
+
+.owners-form {
+  background: #fff; border-radius: var(--r-xl); padding: 34px 32px;
+  box-shadow: var(--shadow-lg); display: grid; gap: 16px;
+  border-top: 5px solid var(--brand-600);
+}
+.owners-form .row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.owners-form label { display: grid; gap: 6px; }
+.owners-form span { font-size: .82rem; font-weight: 600; color: var(--ink-soft); }
+
+/* B2B nav item reads as a separate door, not another service link */
+.nav-b2b { color: var(--brand-700) !important; font-weight: 700 !important; }
 
 /* =========================================================
    FAQ
@@ -400,9 +528,12 @@ details[open] .chev::after { transform: rotate(45deg); }
 /* =========================================================
    FOOTER
    ========================================================= */
-.site-footer { background: #071B27; color: #A9C6D6; padding: 66px 0 30px; }
+.site-footer { background: #071B27; color: #A9C6D6; padding: 66px 0 52px; }
 .footer-grid { display: grid; grid-template-columns: 1.6fr 1fr 1fr 1.2fr; gap: 40px; padding-bottom: 44px; border-bottom: 1px solid rgba(255,255,255,.08); }
-.footer-brand img { height: 82px; width: auto; margin-bottom: 18px; background: #fff; padding: 12px 18px; border-radius: 16px; box-shadow: var(--shadow-sm); }
+/* White monochrome lockup — the brand PNG has dark "CLEAN" text that vanishes on
+   the navy footer. Inverting beats the old white plate, which read as a sticker.
+   max-width:none guards against the global img{max-width:100%} squash. */
+.footer-brand img { height: 60px; width: auto; max-width: none; flex-shrink: 0; margin-bottom: 20px; filter: brightness(0) invert(1); opacity: .93; }
 .footer-brand p { font-size: .94rem; max-width: 30em; margin-bottom: 14px; }
 .footer-col h4 { color: #fff; font-size: 1rem; margin-bottom: 16px; }
 .footer-col a, .footer-col span { display: block; color: #A9C6D6; font-size: .94rem; margin-bottom: 10px; }
@@ -459,22 +590,66 @@ details[open] .chev::after { transform: rotate(45deg); }
 .reveal.in { opacity: 1; transform: none; }
 
 /* =========================================================
+   SCROLL TO TOP
+   Desktop only — on mobile the floating CTA bar + WhatsApp FAB
+   already own the bottom edge; a third floater is clutter.
+   Sits above .wa-fab (right 20 / bottom 20, 60px tall).
+   ========================================================= */
+.scroll-top {
+  position: fixed; right: 20px; bottom: 92px; z-index: 94;
+  width: 46px; height: 46px; display: none; align-items: center; justify-content: center;
+  border: 1px solid var(--line); border-radius: 50%; cursor: pointer;
+  background: rgba(255,255,255,.86); color: var(--brand-600);
+  -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px);
+  box-shadow: var(--shadow-sm);
+  opacity: 0; transform: translateY(10px) scale(.9); pointer-events: none;
+  transition: opacity .3s var(--ease), transform .3s var(--ease), box-shadow .3s var(--ease);
+}
+.scroll-top svg { width: 20px; height: 20px; }
+.scroll-top.visible { opacity: 1; transform: none; pointer-events: auto; }
+.scroll-top:hover { transform: translateY(-3px); box-shadow: var(--shadow-md); background: #fff; }
+@media (min-width: 900px) { .scroll-top { display: inline-flex; } }
+
+/* Service card links: nudge toward the arrow on hover */
+.svc-link { display: inline-block; transition: color .25s var(--ease), transform .25s var(--ease); }
+.svc-link:hover { transform: translateX(3px); }
+
+/* =========================================================
    RESPONSIVE
    ========================================================= */
 @media (max-width: 980px) {
   .hero-grid { grid-template-columns: 1fr; gap: 28px; }
-  .hero-bg { background-position: center 30%; }
-  .hero-bg::after { background: linear-gradient(180deg, rgba(244,251,255,.94) 0%, rgba(244,251,255,.80) 55%, rgba(244,251,255,.62) 100%); }
+  .hero-bg-img { background-position: center 30%; }
+  .hero::after { background: linear-gradient(180deg, rgba(244,251,255,.94) 0%, rgba(244,251,255,.80) 55%, rgba(244,251,255,.62) 100%); }
   .quote-card { width: 100%; max-width: 460px; margin: 0 auto; }
   .pets-grid { grid-template-columns: 1fr; gap: 40px; }
   .services-grid { grid-template-columns: 1fr 1fr; }
   .service-card.featured { grid-column: span 2; }
   .included-grid { grid-template-columns: 1fr 1fr; }
-  .referral-inner { grid-template-columns: 1fr; text-align: center; justify-items: center; gap: 26px; padding: 38px 30px; }
+  /* minmax(0,1fr) not 1fr — a bare 1fr keeps its min-content floor, so the
+     ref-text column refused to shrink below 415px and clipped on phones. */
+  .referral-inner { grid-template-columns: minmax(0, 1fr); text-align: center; justify-items: center; gap: 26px; padding: 38px 30px; }
+  .ref-text { min-width: 0; }
+  .ref-text h2 { overflow-wrap: anywhere; }
+  .ref-steps { flex-wrap: wrap; }
+  /* The long share CTA ("Compartilhar & indicar no WhatsApp") inherits
+     .btn's white-space:nowrap, which pinned the column at 415px. Let this
+     one wrap; other buttons keep nowrap. */
+  .ref-text .btn { white-space: normal; }
   .ref-steps { justify-content: center; }
-  .why-grid, .estimate-grid { grid-template-columns: 1fr; gap: 40px; }
+  .why-grid, .estimate-grid, .owners-grid { grid-template-columns: 1fr; gap: 40px; }
   .review-grid, .steps { grid-template-columns: 1fr; }
   .footer-grid { grid-template-columns: 1fr 1fr; }
+}
+
+/* Burger takes over while the 7-item nav still fits comfortably, not after it breaks */
+@media (max-width: 1300px) {
+  .nav { display: none; }
+  .nav-toggle { display: flex; }
+  .nav.open {
+    display: flex; flex-direction: column; position: absolute; top: 74px; left: 0; right: 0;
+    background: #fff; padding: 20px 24px; gap: 18px; box-shadow: var(--shadow-md); border-bottom: 1px solid var(--line);
+  }
 }
 
 @media (max-width: 720px) {
@@ -486,10 +661,24 @@ details[open] .chev::after { transform: rotate(45deg); }
     background: #fff; padding: 20px 24px; gap: 18px; box-shadow: var(--shadow-md); border-bottom: 1px solid var(--line);
   }
   .header-actions .btn-sm { display: none; }
+  /* The fixed .floating-cta bar (+ WhatsApp FAB) sits over the bottom edge on
+     phones — without this the copyright line hides behind it and the page reads
+     as "cut off". Clears the ~74px bar plus breathing room. */
+  .site-footer { padding-bottom: 100px; }
+  /* Phone header: logo, language and burger must all fit at 360px */
+  .header-inner { gap: 12px; height: 84px; }
+  .brand-logo { height: 50px; }
+  .lang-switch button { padding: 5px 9px; font-size: .72rem; }
+}
+
+@media (max-width: 480px) {
+  .container { padding: 0 16px; }
+  .brand-logo { height: 42px; }
+  .lang-switch button { padding: 5px 7px; font-size: .68rem; }
   .services-grid { grid-template-columns: 1fr; }
   .service-card.featured { grid-column: span 1; }
   .included-grid { grid-template-columns: 1fr; }
-  .estimate-form .row { grid-template-columns: 1fr; }
+  .estimate-form .row, .owners-form .row { grid-template-columns: 1fr; }
   .footer-grid { grid-template-columns: 1fr; }
   .floating-cta { display: block; }
   .wa-fab { bottom: 86px; right: 16px; width: 54px; height: 54px; }
@@ -500,4 +689,7 @@ details[open] .chev::after { transform: rotate(45deg); }
 @media (prefers-reduced-motion: reduce) {
   * { animation-duration: .001ms !important; animation-iteration-count: 1 !important; transition-duration: .001ms !important; scroll-behavior: auto !important; }
   .reveal { opacity: 1; transform: none; }
+  /* Hold the hero at its intended crop instead of snapping to the Ken Burns end frame */
+  .hero-bg-img { transform: scale(1.06) !important; }
+  .hero-stagger > * { opacity: 1; transform: none; }
 }
