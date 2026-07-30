@@ -8,8 +8,8 @@
   const DICT = window.I18N || {};
   const SUPPORTED = ['en', 'pt', 'es'];
   const trustItems = {
-    en: ['✓ Same trusted team', '✓ Bonded & insured', '✓ "On our way" message', '✓ Pet-friendly products', '✓ Vacation-rental specialists', '✓ EN · PT · ES'],
-    pt: ['✓ Sempre a mesma equipe', '✓ Com seguro', '✓ Alertas "estamos a caminho"', '✓ Produtos pet-friendly', '✓ Especialistas em vacation rentals', '✓ EN · PT · ES'],
+    en: ['✓ Trusted people, never a stranger', '✓ Insured', '✓ "On our way" message', '✓ Pet-friendly products', '✓ Vacation-rental specialists', '✓ EN · PT · ES'],
+    pt: ['✓ Gente de confiança, nunca um estranho', '✓ Com seguro', '✓ Alertas "estamos a caminho"', '✓ Produtos pet-friendly', '✓ Especialistas em vacation rentals', '✓ EN · PT · ES'],
     es: ['✓ Siempre el mismo equipo', '✓ Con seguro', '✓ Alertas "vamos en camino"', '✓ Productos pet-friendly', '✓ Especialistas en vacation rentals', '✓ EN · PT · ES']
   };
 
@@ -200,13 +200,51 @@
     prefersReducedMotion.addEventListener('change', syncParallax);
   }
 
-  /* Form handling (placeholder — wire to Formspree/N8N webhook) */
-  function handleForm(form, note) {
+  /* Form handling — opens WhatsApp (Sofia) with the lead details prefilled. Zero backend, no lead lost. */
+  const WA_NUMBER = '18634381727';
+  const LEAD_HEADERS = {
+    estimate: {
+      en: "Hi Urban Clean! I'd like a free quote:",
+      pt: 'Olá Urban Clean! Quero um orçamento grátis:',
+      es: '¡Hola Urban Clean! Quiero un presupuesto gratis:'
+    },
+    owners: {
+      en: 'Hi Urban Clean! I manage properties and want vacation-rental turnover cleaning:',
+      pt: 'Olá Urban Clean! Administro imóveis e quero limpeza de turnover:',
+      es: '¡Hola Urban Clean! Administro propiedades y quiero limpieza de turnover:'
+    }
+  };
+  function currentLang() {
+    try { return localStorage.getItem('uc_lang') || (document.documentElement.lang || 'en').slice(0, 2); }
+    catch (e) { return 'en'; }
+  }
+  function fieldLabel(el) {
+    if (el.labels && el.labels[0]) return el.labels[0].textContent.trim();
+    return el.getAttribute('aria-label') || el.placeholder || el.name;
+  }
+  function buildWhatsAppUrl(form, headerKey) {
+    const lang = currentLang();
+    const group = LEAD_HEADERS[headerKey] || {};
+    const header = group[lang] || group.en || '';
+    const lines = [];
+    form.querySelectorAll('input, select, textarea').forEach((el) => {
+      if (!el.name || el.type === 'submit' || el.type === 'button' || el.type === 'hidden') return;
+      let val = el.value;
+      if (el.type === 'checkbox') val = el.checked ? 'Yes' : '';
+      if (el.type === 'radio' && !el.checked) return;
+      if (!val || !String(val).trim()) return;
+      lines.push(`${fieldLabel(el)}: ${val}`);
+    });
+    const body = header + (lines.length ? '\n' + lines.join('\n') : '');
+    return `https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(body)}`;
+  }
+  function handleForm(form, note, headerKey) {
     if (!form) return;
     form.addEventListener('submit', (e) => {
       e.preventDefault();
-      const data = Object.fromEntries(new FormData(form).entries());
-      console.log('[Urban Clean] lead captured:', data);
+      const url = buildWhatsAppUrl(form, headerKey);
+      const win = window.open(url, '_blank', 'noopener');
+      if (!win) window.location.href = url;
       if (note) {
         note.hidden = false;
         const btn = form.querySelector('button[type="submit"]');
@@ -215,15 +253,17 @@
       form.reset();
     });
   }
-  handleForm(document.getElementById('estimateForm'), document.getElementById('formNote'));
-  handleForm(document.getElementById('ownersForm'), document.getElementById('ownersNote'));
+  handleForm(document.getElementById('estimateForm'), document.getElementById('formNote'), 'estimate');
+  handleForm(document.getElementById('ownersForm'), document.getElementById('ownersNote'), 'owners');
 
   const miniForm = document.getElementById('miniForm');
   if (miniForm) {
     miniForm.addEventListener('submit', (e) => {
       e.preventDefault();
-      console.log('[Urban Clean] mini lead:', Object.fromEntries(new FormData(miniForm).entries()));
-      setTimeout(() => scrollToTarget(document.getElementById('estimate')), 120);
+      const url = buildWhatsAppUrl(miniForm, 'estimate');
+      const win = window.open(url, '_blank', 'noopener');
+      if (!win) window.location.href = url;
+      miniForm.reset();
     });
   }
 })();
