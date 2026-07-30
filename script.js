@@ -29,6 +29,10 @@
       const v = dict[el.getAttribute('data-i18n')];
       if (v != null) el.textContent = v;
     });
+    document.querySelectorAll('[data-i18n-ph]').forEach((el) => {
+      const v = dict[el.getAttribute('data-i18n-ph')];
+      if (v != null) el.setAttribute('placeholder', v);
+    });
     document.querySelectorAll('[data-i18n-html]').forEach((el) => {
       const v = dict[el.getAttribute('data-i18n-html')];
       if (v != null) el.innerHTML = v;

@@ -467,7 +467,7 @@ input:focus, select:focus, textarea:focus { outline: none; border-color: var(--b
 .estimate { background: var(--brand-900); color: #EAF6FD; padding: clamp(70px, 6vw, 110px) 0; position: relative; overflow: hidden; }
 .estimate::before { content: ''; position: absolute; bottom: -20%; right: -8%; width: 46vw; height: 46vw; background: radial-gradient(circle, rgba(20,166,228,.3), transparent 62%); }
 .estimate-grid { position: relative; z-index: 2; display: grid; grid-template-columns: 1fr 1.05fr; gap: 54px; align-items: center; }
-.estimate-copy h2 { color: #fff; font-size: clamp(2rem, 1.4rem + 2.4vw, 3rem); margin-bottom: 16px; }
+.estimate-copy h2 { color: #fff; font-size: clamp(1.5rem, 1.05rem + 2.4vw, 3rem); margin-bottom: 16px; overflow-wrap: anywhere; }
 .estimate-copy > p { color: #BFE0F0; font-size: 1.08rem; max-width: 36em; }
 .estimate-perks { display: grid; gap: 10px; margin: 24px 0; }
 .estimate-perks li { color: #D6EDF8; font-weight: 500; }
