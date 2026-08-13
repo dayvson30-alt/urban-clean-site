@@ -223,9 +223,33 @@
     catch (e) { return 'en'; }
   }
   function fieldLabel(el) {
-    if (el.labels && el.labels[0]) return el.labels[0].textContent.trim();
+    const lab = el.labels && el.labels[0];
+    // O <label> envolve o campo: em <select> o textContent do label arrasta
+    // junto o texto de TODAS as <option>. Usar o <span> do rótulo quando existir.
+    if (lab) return (lab.querySelector('span') || lab).textContent.trim();
     return el.getAttribute('aria-label') || el.placeholder || el.name;
   }
+  // De onde veio a lead. O site não tem analytics — sem isto, toda lead do
+  // formulário chega sem origem e a atribuição vira chute. Grava a PRIMEIRA
+  // fonte da sessão (a navegação interna sobrescreveria o referrer).
+  function leadSource() {
+    try {
+      const saved = sessionStorage.getItem('uc_src');
+      if (saved) return saved;
+      const p = new URLSearchParams(location.search);
+      const self = location.hostname.replace(/^www\./, '');
+      const host = document.referrer ? new URL(document.referrer).hostname.replace(/^www\./, '') : '';
+      const src = p.get('utm_source')
+        || (p.has('fbclid') ? 'facebook' : '')
+        || (p.has('gclid') ? 'google-ads' : '')
+        || (host && host !== self ? host : '')
+        || 'direto';
+      sessionStorage.setItem('uc_src', src);
+      return src;
+    } catch (e) { return 'na'; }
+  }
+  leadSource(); // captura no load, não no submit
+
   function buildWhatsAppUrl(form, headerKey) {
     const lang = currentLang();
     const group = LEAD_HEADERS[headerKey] || {};
@@ -239,6 +263,7 @@
       if (!val || !String(val).trim()) return;
       lines.push(`${fieldLabel(el)}: ${val}`);
     });
+    lines.push('Ref: ' + leadSource());
     const body = header + (lines.length ? '\n' + lines.join('\n') : '');
     return `https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(body)}`;
   }
