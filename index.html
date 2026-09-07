@@ -20,6 +20,27 @@
   <link rel="icon" type="image/png" href="assets/logo.png" />
   <link rel="stylesheet" href="styles.css" />
 
+  <!-- ============ META PIXEL ============
+       INERTE ate META_PIXEL_ID ser preenchido: sem ID, nada e carregado e nada
+       e enviado ao Meta. Para ativar, criar o pixel em Events Manager
+       (business.facebook.com/events_manager > Conectar fonte de dados > Web) e
+       colar aqui o ID numerico. Este e o UNICO lugar a editar.
+       Sem <noscript> de proposito: o fallback exige o ID cravado no HTML e
+       so cobre visitante sem JS, que aqui nao consegue nem enviar o formulario. -->
+  <script>
+    window.META_PIXEL_ID = '1073124701976213'; // dataset "Urban Publisher", Events Manager
+    (function () {
+      if (!window.META_PIXEL_ID) return;
+      !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+      n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;
+      n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;
+      t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}
+      (window,document,'script','https://connect.facebook.net/en_US/fbevents.js');
+      fbq('init', window.META_PIXEL_ID);
+      fbq('track', 'PageView');
+    })();
+  </script>
+
   <!-- aggregateRating intentionally omitted: no real reviews yet. Add it only from
        verified customer ratings — fabricated structured data risks a Google manual action. -->
   <script type="application/ld+json">

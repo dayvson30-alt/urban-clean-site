@@ -250,6 +250,25 @@
   }
   leadSource(); // captura no load, não no submit
 
+  /* =========================================================
+     META PIXEL — eventos
+     So dispara se o pixel estiver carregado (fbq definido). Sem ID configurado
+     estas funcoes viram no-op e o site segue igual.
+     Contact = clique num CTA de WhatsApp do NEGOCIO. O link de indicacao
+     (wa.me/?text=...) e um share, nao um contato: fica de fora de proposito.
+     ========================================================= */
+  function track(event, params) {
+    if (typeof window.fbq !== 'function') return;
+    window.fbq('track', event, params || {});
+  }
+  document.addEventListener('click', (e) => {
+    const link = e.target.closest && e.target.closest('a[href*="wa.me/' + WA_NUMBER + '"]');
+    if (link) track('Contact', { source: leadSource() });
+  });
+  document.addEventListener('submit', () => {
+    track('Lead', { source: leadSource() });
+  }, true); // captura: o handler do form chama preventDefault
+
   function buildWhatsAppUrl(form, headerKey) {
     const lang = currentLang();
     const group = LEAD_HEADERS[headerKey] || {};
