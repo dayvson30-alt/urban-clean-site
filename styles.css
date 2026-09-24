@@ -530,10 +530,11 @@ details[open] .chev::after { transform: rotate(45deg); }
    ========================================================= */
 .site-footer { background: #071B27; color: #A9C6D6; padding: 66px 0 52px; }
 .footer-grid { display: grid; grid-template-columns: 1.6fr 1fr 1fr 1.2fr; gap: 40px; padding-bottom: 44px; border-bottom: 1px solid rgba(255,255,255,.08); }
-/* White monochrome lockup — the brand PNG has dark "CLEAN" text that vanishes on
-   the navy footer. Inverting beats the old white plate, which read as a sticker.
-   max-width:none guards against the global img{max-width:100%} squash. */
-.footer-brand img { height: 60px; width: auto; max-width: none; flex-shrink: 0; margin-bottom: 20px; filter: brightness(0) invert(1); opacity: .93; }
+/* O rodape usa o ARQUIVO branco da marca, nao um filtro. brightness(0) invert(1)
+   pintava tudo de branco: matava o azul do telhado e preenchia o aspirador, que
+   e vazado — ele sumia dentro da casa branca. max-width:none guarda contra o
+   img{max-width:100%} global. */
+.footer-brand img { height: 60px; width: auto; max-width: none; flex-shrink: 0; margin-bottom: 20px; }
 .footer-brand p { font-size: .94rem; max-width: 30em; margin-bottom: 14px; }
 .footer-col h4 { color: #fff; font-size: 1rem; margin-bottom: 16px; }
 .footer-col a, .footer-col span { display: block; color: #A9C6D6; font-size: .94rem; margin-bottom: 10px; }
