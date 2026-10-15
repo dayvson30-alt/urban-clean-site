@@ -2,7 +2,7 @@
 // Depois: dev-browser --headless < tools/social/render.devbrowser.js  (gera os JPGs no temp do dev-browser)
 const fs = require('fs');
 const path = require('path');
-const { posts, CTA, TAGS, WA } = require('./posts');
+const { posts, ads, CTA, TAGS, WA } = require('./posts');
 
 const SITE = 'https://www.urbancleanfl.com/assets/social/';
 const ROOT = path.join(__dirname, '..', '..');
@@ -62,7 +62,7 @@ queue.forEach((q, k) => { q.slot = k + 1; });
 fs.writeFileSync(path.join(ROOT, 'assets/social/queue.json'),
   JSON.stringify(queue.map(({ _file, ...q }) => ({ slot: q.slot, ...q })), null, 2) + '\n');
 
-const toRender = posts.filter(p => p.type !== 'photo').map(p => ({ name: `${p.slug}.jpg`, html: card(p) }));
+const toRender = posts.concat(ads).filter(p => p.type !== 'photo').map(p => ({ name: `${p.slug}.jpg`, html: card(p) }));
 fs.writeFileSync(path.join(__dirname, 'render.devbrowser.js'),
 `const cards = ${JSON.stringify(toRender)};
 const page = await browser.getPage("social-render");

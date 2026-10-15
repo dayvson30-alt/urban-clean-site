@@ -20,7 +20,7 @@ const posts = [
     es: `Tu microondas no necesita que lo talles. Necesita vapor.\n\nUn tazón apto para microondas, una taza de agua y una rodaja de limón. Tres minutos en alto y deja la puerta cerrada dos minutos más. La grasa se ablanda y sale con una sola pasada.` },
 
   { slug: 'price-weekly-en', kind: 'price', type: 'price',
-    label: 'WEEKLY PLAN', headline: 'Weekly, per visit',
+    label: 'HOUSE CLEANING', headline: 'Weekly cleaning, per visit',
     rows: [['1 bedroom', '$75'], ['2 bedrooms', '$99'], ['3 bedrooms', '$125']],
     note: 'Condos & apartments · pets at no extra charge',
     en: `Weekly cleaning, per visit:\n1 bedroom $75. 2 bedrooms $99. 3 bedrooms $125.\n\nWeekly is the cheapest per visit because the house never gets far from clean. Less buildup, less time, lower price. Dogs and cats don't change the number.`,
@@ -130,7 +130,7 @@ const posts = [
     es: `La isla es la superficie más usada de la casa, por eso es lo primero que se ve.\n\nEmpezamos por ahí en cada visita. La despejamos, la limpiamos y secamos la piedra para que no queden marcas cuando le pega la luz de la tarde.` },
 
   { slug: 'price-monthly-es', kind: 'price', type: 'price',
-    label: 'PLAN MENSUAL', headline: 'Mensual, por visita',
+    label: 'LIMPIEZA DE CASAS', headline: 'Limpieza mensual, por visita',
     rows: [['1 recámara', '$105'], ['2 recámaras', '$140'], ['3 recámaras', '$175']],
     note: 'Condominios y apartamentos · mascotas sin costo extra',
     en: `Monthly cleaning, per visit:\n1 bedroom $105. 2 bedrooms $140. 3 bedrooms $175.\n\nGood for people who keep up with the basics and want a real reset once a month. Same team, same checklist, photos when we finish.`,
@@ -190,4 +190,11 @@ const posts = [
     es: `Las líneas de polvo alrededor de las rejillas del aire son, primero, un problema del filtro.\n\nEn Florida central el aire está prendido casi todo el año, así que el filtro se llena más rápido de lo que dice la caja. Revísalo cada mes y cámbialo cuando se vea gris. Luego limpia las rejillas con microfibra húmeda. También habrá menos polvo en todo lo demás.` },
 ];
 
-module.exports = { posts, CTA, TAGS, WA };
+// Cards usados so em anuncios (nao entram na fila organica)
+const ads = [
+  { slug: 'ad-from75-en', type: 'price', label: 'DAVENPORT · CONDOS & APARTMENTS', headline: 'House cleaning from $75',
+    rows: [['1 bedroom', '$75'], ['2 bedrooms', '$99'], ['3 bedrooms', '$125']],
+    note: 'Per visit with weekly cleaning · pets free · $15 off first visits' },
+];
+
+module.exports = { posts, ads, CTA, TAGS, WA };
